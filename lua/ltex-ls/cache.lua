@@ -15,14 +15,22 @@ end
 
 --- Get the path to use for the cache
 ---@param client vim.lsp.Client
----@return string path The path to the cache
+---@return string? path The path to the cache
 local function get_cache_path(client)
+  if not client.root_dir then
+    return nil
+  end
   return vim.fs.joinpath(client.root_dir, M.CACHE_FNAME)
 end
 
 --- Reads the cache associated with filepath
+---@return table content
+---@return string? path
 function M.read(client)
   local p = get_cache_path(client)
+  if not p then
+    return {}, nil
+  end
 
   local cfile = io.open(p, "r")
   if cfile then
@@ -57,17 +65,21 @@ function M.update(client, content)
     end
   end
 
-  write_cache(fpath, cache_content)
+  if fpath then
+    write_cache(fpath, cache_content)
+  end
   return cache_content
 end
 
 function M.clear(client, key)
   local content, path = M.read(client)
-  if not key then
+  if not key and path then
     os.remove(path)
   else
     content[key] = nil
-    write_cache(path, content)
+    if path then
+      write_cache(path, content)
+    end
   end
 end
 
