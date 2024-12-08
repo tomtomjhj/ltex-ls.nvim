@@ -182,7 +182,7 @@ local commands = {
 --- Setup ltex-ls to integrate with neovim
 --- This assumes that config matches what lspconfig expects
 function M.setup(user_config)
-  vim.lsp.commands["_ltex.addToDictionnary"] = mk_command_handler(function(cmd, args, client)
+  vim.lsp.commands["_ltex.addToDictionary"] = mk_command_handler(function(cmd, args, client)
     require'ltex-ls.handlers'.handle_option_update(client, "dictionary", args.words)
   end)
   vim.lsp.commands["_ltex.hideFalsePositives"] = mk_command_handler(function(cmd, args, client)
