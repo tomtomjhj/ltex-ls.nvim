@@ -5,13 +5,13 @@ local internal_config = require 'ltex-ls.config'
 local ok, lspconfig = pcall(require, 'lspconfig')
 local setup
 if ok then
-  setup = lspconfig.ltex.setup
+  setup = lspconfig.ltex_plus.setup
 else
   local augroup = vim.api.nvim_create_augroup("LTeX_NVIM", {})
   setup = function(config)
     local cfg = vim.deepcopy(config)
     cfg.name = "ltex"
-    cfg.cmd = { "ltex-ls" }
+    cfg.cmd = { "ltex-ls-plus" }
     vim.api.nvim_create_autocmd("Filetype", {
       pattern = config.filetypes,
       group = augroup,
